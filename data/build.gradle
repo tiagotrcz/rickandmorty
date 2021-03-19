@@ -1,0 +1,27 @@
+plugins {
+    id 'com.android.library'
+    id 'kotlin-android'
+    id "kotlin-kapt"
+    id "dagger.hilt.android.plugin"
+}
+
+dependencies {
+    implementation project(":domain")
+
+    api "org.jetbrains.kotlinx:kotlinx-coroutines-android:$versions.coroutines"
+
+    api "com.squareup.retrofit2:retrofit:$versions.retrofit"
+    api "com.squareup.retrofit2:converter-moshi:$versions.retrofit"
+
+    api platform("com.squareup.okhttp3:okhttp-bom:$versions.okhttp")
+    api "com.squareup.okhttp3:okhttp"
+    api "com.squareup.okhttp3:logging-interceptor"
+
+    api "com.squareup.moshi:moshi-kotlin:$versions.moshi"
+
+    api "com.google.dagger:hilt-android:$versions.hilt"
+    kapt "com.google.dagger:hilt-android-compiler:$versions.hilt"
+
+    testImplementation "junit:junit:$versions.junit"
+    testImplementation "io.mockk:mockk:$versions.mockk"
+}

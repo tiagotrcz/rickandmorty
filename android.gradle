@@ -1,0 +1,52 @@
+subprojects {
+    afterEvaluate { project ->
+        if (project.hasProperty('android')) {
+            apply from: 'dependencies.gradle'
+
+            android {
+                compileSdkVersion versions.compile_sdk
+
+                defaultConfig {
+                    minSdkVersion versions.min_sdk
+                    targetSdkVersion versions.target_sdk
+                    versionCode versions.version_code
+                    versionName versions.version_name
+
+                    testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+                }
+
+                buildTypes {
+                    release {
+                        minifyEnabled true
+                        proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+                        testCoverageEnabled = false
+                    }
+                    debug {
+                        testCoverageEnabled = true
+                    }
+                }
+
+                compileOptions {
+                    sourceCompatibility JavaVersion.VERSION_1_8
+                    targetCompatibility JavaVersion.VERSION_1_8
+                }
+                kotlinOptions {
+                    jvmTarget = '1.8'
+                }
+
+                testOptions {
+                    unitTests.returnDefaultValues = true
+                    unitTests.all {
+                        jacoco {
+                            includeNoLocationClasses = true
+                        }
+                    }
+                }
+
+                dependencies {
+                    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin"
+                }
+            }
+        }
+    }
+}
