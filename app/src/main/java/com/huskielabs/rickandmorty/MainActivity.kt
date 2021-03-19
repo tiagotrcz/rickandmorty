@@ -10,12 +10,17 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
+import androidx.hilt.navigation.compose.hiltNavGraphViewModel
 import androidx.navigation.compose.*
 import com.huskielabs.rickandmorty.ui.screens.character.CharacterScreen
+import com.huskielabs.rickandmorty.ui.screens.character.CharacterViewModel
+import com.huskielabs.rickandmorty.ui.screens.character.CharacterViewModelContract
 import com.huskielabs.rickandmorty.ui.theme.Gray1
 import com.huskielabs.rickandmorty.ui.theme.Indigo
 import com.huskielabs.rickandmorty.ui.theme.RickAndMortyTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     @ExperimentalFoundationApi
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -79,7 +84,8 @@ private fun Navigation() {
     ) {
         NavHost(navController, startDestination = Screen.Character.route) {
             composable(Screen.Character.route) {
-                CharacterScreen()
+                val viewModel: CharacterViewModelContract = hiltNavGraphViewModel<CharacterViewModel>()
+                CharacterScreen(viewModel)
             }
             composable(Screen.Location.route) {
 //                Profile(navController)

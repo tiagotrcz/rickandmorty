@@ -7,7 +7,7 @@ import retrofit2.http.Query
 
 interface CharacterService {
 
-    @GET
+    @GET("character")
     suspend fun getCharacters(@Query("page") page: Int): PageDTO<CharacterDTO>
 
 }

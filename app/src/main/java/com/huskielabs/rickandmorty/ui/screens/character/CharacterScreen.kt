@@ -7,64 +7,76 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.GridCells
 import androidx.compose.foundation.lazy.LazyVerticalGrid
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.coil.CoilImage
-import com.huskielabs.rickandmorty.ui.theme.AdditionalText
-import com.huskielabs.rickandmorty.ui.theme.Black
-import com.huskielabs.rickandmorty.ui.theme.Gray6
-import com.huskielabs.rickandmorty.ui.theme.White
-
-val list = listOf(
-    CharacterViewData(
-        id = 0,
-        image = "https://rickandmortyapi.com/api/character/avatar/11.jpeg",
-        name = "Albert Einstein",
-        status = "Alive"
-    ),
-    CharacterViewData(
-        id = 0,
-        image = "https://rickandmortyapi.com/api/character/avatar/11.jpeg",
-        name = "Albert Einstein",
-        status = "Alive"
-    ),
-    CharacterViewData(
-        id = 0,
-        image = "https://rickandmortyapi.com/api/character/avatar/11.jpeg",
-        name = "Albert Einstein",
-        status = "Alive"
-    )
-)
+import com.huskielabs.rickandmorty.ui.theme.*
 
 @ExperimentalFoundationApi
 @Composable
-fun CharacterScreen() {
+fun CharacterScreen(viewModel: CharacterViewModelContract) {
+    val list by viewModel.characterList.collectAsState(initial = emptyList())
+    val isLoading by viewModel.isLoading.collectAsState()
+
     Scaffold {
-        CharacterScreenContent(list)
+        CharacterScreenContent(
+            list = list,
+            isLoading = isLoading,
+            getMoreItems = viewModel::getCharacters
+        )
     }
 }
 
 @ExperimentalFoundationApi
 @Composable
-private fun CharacterScreenContent(list: List<CharacterViewData>) {
+private fun CharacterScreenContent(
+    list: List<CharacterViewData>,
+    isLoading: Boolean,
+    getMoreItems: () -> Unit
+) {
     val scrollState = rememberLazyListState()
+    val lastIndex = if (list.lastIndex <= 4) list.lastIndex else list.lastIndex - 4
     LazyVerticalGrid(
         state = scrollState,
         cells = GridCells.Fixed(2),
-        contentPadding = PaddingValues(horizontal = 14.dp, vertical = 20.dp),
+        contentPadding = PaddingValues(start = 14.dp, top = 20.dp, end = 14.dp, bottom = 50.dp),
+        modifier = Modifier.fillMaxWidth()
     ) {
-        items(list) { character ->
-            CharacterItem(character = character)
+        itemsIndexed(list) { index, character ->
+            CharacterItem(character)
+
+            if (index == lastIndex) {
+                getMoreItems()
+            }
+        }
+
+        if (isLoading) {
+            item {
+                Box(
+                    contentAlignment = Alignment.TopCenter, modifier = Modifier
+                        .fillMaxWidth()
+                        .height(70.dp)
+                ) {
+                    CircularProgressIndicator(
+                        color = Indigo,
+                        modifier = Modifier.size(48.dp)
+                    )
+                }
+            }
         }
     }
 }
