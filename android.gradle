@@ -33,19 +33,6 @@ subprojects {
                 kotlinOptions {
                     jvmTarget = '1.8'
                 }
-
-                testOptions {
-                    unitTests.returnDefaultValues = true
-                    unitTests.all {
-                        jacoco {
-                            includeNoLocationClasses = true
-                        }
-                    }
-                }
-
-                dependencies {
-                    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin"
-                }
             }
         }
     }
