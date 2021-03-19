@@ -6,8 +6,10 @@ val Indigo = Color(0xFF5856D6)
 
 val Adding = Color(0xFF34C759)
 val Destructive = Color(0xFF3FF3B30)
+val AdditionalText = Color(0xFF6E798C)
 val Black = Color(0xFF081F32)
 val White = Color(0xFFFFFFFF)
+
 
 val Gray = Color(0xFFC7C7CC)
 val Gray1 = Color(0xFF8E8E93)

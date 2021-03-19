@@ -3,6 +3,7 @@ package com.huskielabs.rickandmorty
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -16,6 +17,7 @@ import com.huskielabs.rickandmorty.ui.theme.Indigo
 import com.huskielabs.rickandmorty.ui.theme.RickAndMortyTheme
 
 class MainActivity : ComponentActivity() {
+    @ExperimentalFoundationApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -35,6 +37,7 @@ private val items = listOf(
     Screen.Episode,
 )
 
+@ExperimentalFoundationApi
 @Composable
 private fun Navigation() {
     val navController = rememberNavController()
