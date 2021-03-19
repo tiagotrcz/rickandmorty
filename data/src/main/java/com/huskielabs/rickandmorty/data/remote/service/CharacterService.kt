@@ -1,0 +1,13 @@
+package com.huskielabs.rickandmorty.data.remote.service
+
+import com.huskielabs.rickandmorty.data.remote.dtos.CharacterDTO
+import com.huskielabs.rickandmorty.data.remote.dtos.PageDTO
+import retrofit2.http.GET
+import retrofit2.http.Query
+
+interface CharacterService {
+
+    @GET
+    suspend fun getCharacters(@Query("page") page: Int): PageDTO<CharacterDTO>
+
+}

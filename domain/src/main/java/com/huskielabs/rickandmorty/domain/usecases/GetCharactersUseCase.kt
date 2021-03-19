@@ -1,18 +1,17 @@
 package com.huskielabs.rickandmorty.domain.usecases
 
-import com.huskielabs.rickandmorty.domain.datasources.CharactersDataSource
+import com.huskielabs.rickandmorty.domain.datasources.CharacterDataSource
 import com.huskielabs.rickandmorty.domain.models.CharacterModel
 import com.huskielabs.rickandmorty.domain.models.PageModel
-import com.huskielabs.rickandmorty.domain.usecases.shared.FlowUseCase
-import kotlinx.coroutines.flow.Flow
+import com.huskielabs.rickandmorty.domain.usecases.shared.UseCase
 import javax.inject.Inject
 
 class GetCharactersUseCase @Inject constructor(
-    private val charactersDataSource: CharactersDataSource,
-) : FlowUseCase<GetCharactersUseCase.Params, PageModel<CharacterModel>> {
+    private val characterDataSource: CharacterDataSource,
+) : UseCase<GetCharactersUseCase.Params, PageModel<CharacterModel>> {
 
-    override fun invoke(params: Params): Flow<PageModel<CharacterModel>> {
-        return charactersDataSource.getCharacters(params.page)
+    override suspend fun invoke(params: Params): PageModel<CharacterModel> {
+        return characterDataSource.getCharacters(params.page)
     }
 
     data class Params(val page: Int)
