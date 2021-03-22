@@ -10,21 +10,25 @@ import androidx.compose.foundation.lazy.LazyVerticalGrid
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Scaffold
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.coil.CoilImage
 import com.huskielabs.rickandmorty.R
-import com.huskielabs.rickandmorty.ui.theme.*
+import com.huskielabs.rickandmorty.shared.ui.FilterTopBar
+import com.huskielabs.rickandmorty.ui.theme.AdditionalText
+import com.huskielabs.rickandmorty.ui.theme.Black
+import com.huskielabs.rickandmorty.ui.theme.Gray6
+import com.huskielabs.rickandmorty.ui.theme.White
 
 @ExperimentalFoundationApi
 @Composable
@@ -32,36 +36,20 @@ fun CharacterScreen(viewModel: CharacterViewModelContract) {
     val list by viewModel.characterList.collectAsState(initial = emptyList())
     val isLoading by viewModel.isLoading.collectAsState()
 
-    Scaffold(topBar = { TopBar() }) {
+    Scaffold(
+        topBar = {
+            FilterTopBar(
+                title = stringResource(id = R.string.character),
+                onFilterClicked = {}
+            )
+        }
+    ) {
         CharacterScreenContent(
             list = list,
             isLoading = isLoading,
             getMoreItems = viewModel::getCharacters
         )
     }
-}
-
-@Composable
-private fun TopBar() {
-    TopAppBar(
-        title = {
-            Text(
-                text = stringResource(id = R.string.character),
-                style = MaterialTheme.typography.h6,
-                color = Black,
-                modifier = Modifier.padding(16.dp)
-            )
-        },
-        actions = {
-            IconButton(onClick = { /*TODO*/ }) {
-                Icon(
-                    imageVector = ImageVector.vectorResource(id = R.drawable.ic_baseline_filter_list_24),
-                    contentDescription = null,
-                    tint = Indigo
-                )
-            }
-        }
-    )
 }
 
 @ExperimentalFoundationApi

@@ -15,6 +15,9 @@ import androidx.navigation.compose.*
 import com.huskielabs.rickandmorty.ui.screens.character.CharacterScreen
 import com.huskielabs.rickandmorty.ui.screens.character.CharacterViewModel
 import com.huskielabs.rickandmorty.ui.screens.character.CharacterViewModelContract
+import com.huskielabs.rickandmorty.ui.screens.episode.EpisodeScreen
+import com.huskielabs.rickandmorty.ui.screens.episode.EpisodeViewModel
+import com.huskielabs.rickandmorty.ui.screens.episode.EpisodeViewModelContract
 import com.huskielabs.rickandmorty.ui.theme.Gray1
 import com.huskielabs.rickandmorty.ui.theme.Indigo
 import com.huskielabs.rickandmorty.ui.theme.RickAndMortyTheme
@@ -84,14 +87,17 @@ private fun Navigation() {
     ) {
         NavHost(navController, startDestination = Screen.Character.route) {
             composable(Screen.Character.route) {
-                val viewModel: CharacterViewModelContract = hiltNavGraphViewModel<CharacterViewModel>()
+                val viewModel: CharacterViewModelContract =
+                    hiltNavGraphViewModel<CharacterViewModel>(it)
                 CharacterScreen(viewModel)
             }
             composable(Screen.Location.route) {
 //                Profile(navController)
             }
             composable(Screen.Episode.route) {
-//                Profile(navController)
+                val viewModel: EpisodeViewModelContract =
+                    hiltNavGraphViewModel<EpisodeViewModel>(it)
+                EpisodeScreen(viewModel)
             }
         }
     }

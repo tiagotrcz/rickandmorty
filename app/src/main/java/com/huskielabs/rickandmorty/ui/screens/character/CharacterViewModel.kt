@@ -6,7 +6,6 @@ import androidx.lifecycle.viewModelScope
 import com.huskielabs.rickandmorty.domain.usecases.GetCharactersUseCase
 import com.huskielabs.rickandmorty.shared.DispatchersProvider
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -32,7 +31,6 @@ class CharacterViewModel @Inject constructor(
     override fun getCharacters() {
         viewModelScope.launch(dispatchersProvider.ui) {
             isLoading.value = true
-            delay(2000)
             try {
                 currentPage = nextPage
                 val result = getCharactersUseCase(GetCharactersUseCase.Params(currentPage))

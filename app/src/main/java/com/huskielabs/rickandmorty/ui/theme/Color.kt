@@ -9,6 +9,7 @@ val Destructive = Color(0xFF3FF3B30)
 val AdditionalText = Color(0xFF6E798C)
 val Black = Color(0xFF081F32)
 val White = Color(0xFFFFFFFF)
+val Divider = Color(0x14212121)
 
 
 val Gray = Color(0xFFC7C7CC)
