@@ -1,6 +1,7 @@
 package com.huskielabs.rickandmorty.ui.screens.location
 
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -23,8 +24,10 @@ import androidx.compose.ui.unit.dp
 import com.huskielabs.rickandmorty.R
 import com.huskielabs.rickandmorty.shared.lastIndexForPagination
 import com.huskielabs.rickandmorty.shared.ui.FilterTopBar
+import com.huskielabs.rickandmorty.shared.ui.skeletonAnim
 import com.huskielabs.rickandmorty.ui.theme.AdditionalText
 import com.huskielabs.rickandmorty.ui.theme.Black
+import com.huskielabs.rickandmorty.ui.theme.Gray4
 import com.huskielabs.rickandmorty.ui.theme.Gray6
 
 @ExperimentalFoundationApi
@@ -75,6 +78,12 @@ private fun LocationScreenContent(
                     getMoreItems()
                 }
             }
+
+            if (isLoading) {
+                items(3) {
+                    LoadingLocationListItem()
+                }
+            }
         }
     }
 }
@@ -98,6 +107,33 @@ private fun LocationListItem(location: LocationViewData, onLocationClicked: (id:
             text = location.name,
             style = MaterialTheme.typography.subtitle1,
             color = Black
+        )
+    }
+}
+
+@Composable
+private fun LoadingLocationListItem() {
+    val alpha = skeletonAnim()
+    val borderColor = Gray6.copy(alpha = alpha)
+    val boxColor = Gray4.copy(alpha = alpha)
+    Column(
+        modifier = Modifier
+            .padding(10.dp)
+            .size(width = 150.dp, height = 83.dp)
+            .clip(RoundedCornerShape(8.dp))
+            .border(width = 1.dp, color = borderColor, shape = RoundedCornerShape(8.dp))
+            .padding(12.dp)
+    ) {
+        Box(
+            modifier = Modifier
+                .size(width = 60.dp, height = 12.dp)
+                .background(boxColor)
+        )
+        Spacer(modifier = Modifier.height(4.dp))
+        Box(
+            modifier = Modifier
+                .size(width = 110.dp, height = 16.dp)
+                .background(boxColor)
         )
     }
 }

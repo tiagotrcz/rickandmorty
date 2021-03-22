@@ -31,7 +31,6 @@ class LocationViewModel @Inject constructor(
         if (isLastPage) return
         viewModelScope.launch(dispatchersProvider.io) {
             isLoading.value = true
-
             try {
                 currentPage = nextPage
                 val result = getLocationsUseCase(GetLocationsUseCase.Params(currentPage))

@@ -3,19 +3,14 @@ package com.huskielabs.rickandmorty.ui.screens.episode
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material.Divider
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -56,20 +51,34 @@ private fun EpisodeScreenContent(
     isLoading: Boolean,
     onEpisodeCLicked: (id: Int) -> Unit
 ) {
-    val scrollState = rememberLazyListState()
-    LazyColumn(state = scrollState) {
-        episodes.keys.forEach { key ->
-            stickyHeader { ListHeader(title = key) }
-            val episodesList = episodes[key]!!
-            items(episodesList.size) { index ->
-                ListItem(
-                    episode = episodesList[index],
-                    onEpisodeClicked = onEpisodeCLicked,
-                )
-                Divider(
-                    color = Divider,
-                    modifier = Modifier.padding(start = 16.dp)
-                )
+    if (isLoading) {
+        Box(
+            contentAlignment = Alignment.Center,
+            modifier = Modifier
+                .padding(20.dp)
+                .fillMaxSize()
+        ) {
+            CircularProgressIndicator(
+                color = Indigo,
+                modifier = Modifier.size(48.dp)
+            )
+        }
+    } else {
+        val scrollState = rememberLazyListState()
+        LazyColumn(state = scrollState) {
+            episodes.keys.forEach { key ->
+                stickyHeader { ListHeader(title = key) }
+                val episodesList = episodes[key]!!
+                items(episodesList.size) { index ->
+                    ListItem(
+                        episode = episodesList[index],
+                        onEpisodeClicked = onEpisodeCLicked,
+                    )
+                    Divider(
+                        color = Divider,
+                        modifier = Modifier.padding(start = 16.dp)
+                    )
+                }
             }
         }
     }

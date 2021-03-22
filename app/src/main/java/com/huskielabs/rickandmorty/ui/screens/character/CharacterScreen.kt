@@ -26,10 +26,8 @@ import com.google.accompanist.coil.CoilImage
 import com.huskielabs.rickandmorty.R
 import com.huskielabs.rickandmorty.shared.lastIndexForPagination
 import com.huskielabs.rickandmorty.shared.ui.FilterTopBar
-import com.huskielabs.rickandmorty.ui.theme.AdditionalText
-import com.huskielabs.rickandmorty.ui.theme.Black
-import com.huskielabs.rickandmorty.ui.theme.Gray6
-import com.huskielabs.rickandmorty.ui.theme.White
+import com.huskielabs.rickandmorty.shared.ui.skeletonAnim
+import com.huskielabs.rickandmorty.ui.theme.*
 
 @ExperimentalFoundationApi
 @Composable
@@ -60,44 +58,34 @@ private fun CharacterScreenContent(
     isLoading: Boolean,
     getMoreItems: () -> Unit
 ) {
-    Column {
-        val scrollState = rememberLazyListState()
-        val lastIndex = characters.lastIndexForPagination
+    val scrollState = rememberLazyListState()
+    val lastIndex = characters.lastIndexForPagination
 
-        LazyVerticalGrid(
-            state = scrollState,
-            cells = GridCells.Fixed(2),
-            contentPadding = PaddingValues(
-                start = 14.dp,
-                top = 20.dp,
-                end = 14.dp,
-                bottom = 50.dp
-            ),
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            itemsIndexed(characters) { index, character ->
-                CharacterItem(character)
+    LazyVerticalGrid(
+        state = scrollState,
+        cells = GridCells.Fixed(2),
+        contentPadding = PaddingValues(
+            start = 14.dp,
+            top = 20.dp,
+            end = 14.dp,
+            bottom = 50.dp
+        ),
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        itemsIndexed(characters) { index, character ->
+            CharacterItem(character)
 
-                if (index == lastIndex) {
-                    getMoreItems()
-                }
+            if (index == lastIndex) {
+                getMoreItems()
             }
         }
 
-        //TODO find a way to add this to the bottom of the list
-//        if (isLoading || list.isEmpty()) {
-//            Box(
-//                contentAlignment = Alignment.Center, modifier = Modifier
-//                    .fillMaxWidth()
-//                    .height(70.dp)
-//            ) {
-//                CircularProgressIndicator(
-//                    color = Indigo,
-//                    modifier = Modifier.size(48.dp)
-//                )
-//            }
-//
-//        }
+
+        if (isLoading) {
+            items(3) {
+                LoadingCharacterItem()
+            }
+        }
     }
 }
 
@@ -139,6 +127,45 @@ private fun CharacterItem(character: CharacterViewData) {
     }
 }
 
+@Composable
+private fun LoadingCharacterItem() {
+    val alpha = skeletonAnim()
+    val borderColor = Gray6.copy(alpha = alpha)
+    val boxColor = Gray4.copy(alpha = alpha)
+    Column(
+        modifier = Modifier
+            .padding(horizontal = 8.dp, vertical = 10.dp)
+            .size(width = 150.dp, height = 222.dp)
+            .clip(RoundedCornerShape(8.dp))
+            .border(width = 1.dp, color = borderColor, shape = RoundedCornerShape(8.dp))
+            .background(White)
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(140.dp)
+                .background(boxColor)
+        )
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(12.dp)
+        ) {
+            Box(
+                modifier = Modifier
+                    .size(width = 80.dp, height = 12.dp)
+                    .background(boxColor)
+            )
+            Spacer(modifier = Modifier.height(4.dp))
+            Box(
+                modifier = Modifier
+                    .size(width = 180.dp, height = 16.dp)
+                    .background(boxColor)
+            )
+        }
+    }
+}
+
 @Preview
 @Composable
 private fun CharacterItemPreview() {
@@ -149,4 +176,10 @@ private fun CharacterItemPreview() {
         status = "Alive"
     )
     CharacterItem(character)
+}
+
+@Preview
+@Composable
+private fun LoadingCharacterItemPreview() {
+    LoadingCharacterItem()
 }
