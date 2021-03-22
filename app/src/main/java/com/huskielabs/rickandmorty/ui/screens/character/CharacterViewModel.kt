@@ -29,6 +29,7 @@ class CharacterViewModel @Inject constructor(
     override val isLoading = MutableStateFlow(false)
 
     override fun getCharacters() {
+        if (isLastPage) return
         viewModelScope.launch(dispatchersProvider.ui) {
             isLoading.value = true
             try {
@@ -50,6 +51,7 @@ class CharacterViewModel @Inject constructor(
                 characterList.value = characterList.value + charactersList
                 isLoading.value = false
             } catch (e: Exception) {
+                isLoading.value = false
                 Log.e(TAG, "getCharacters: ${e.message}", e)
             }
         }

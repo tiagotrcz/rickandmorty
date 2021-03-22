@@ -3,7 +3,6 @@ package com.huskielabs.rickandmorty.ui.screens.episode
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -14,7 +13,6 @@ import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
-import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -97,10 +95,7 @@ private fun ListItem(
     onEpisodeClicked: (id: Int) -> Unit
 ) {
     Row(modifier = modifier
-        .clickable(
-            interactionSource = MutableInteractionSource(),
-            indication = rememberRipple(color = Gray1)
-        ) { onEpisodeClicked(episode.id) }
+        .clickable { onEpisodeClicked(episode.id) }
         .padding(start = 16.dp, top = 16.dp, bottom = 10.dp)
     ) {
         Column(

@@ -18,6 +18,9 @@ import com.huskielabs.rickandmorty.ui.screens.character.CharacterViewModelContra
 import com.huskielabs.rickandmorty.ui.screens.episode.EpisodeScreen
 import com.huskielabs.rickandmorty.ui.screens.episode.EpisodeViewModel
 import com.huskielabs.rickandmorty.ui.screens.episode.EpisodeViewModelContract
+import com.huskielabs.rickandmorty.ui.screens.location.LocationScreen
+import com.huskielabs.rickandmorty.ui.screens.location.LocationViewModel
+import com.huskielabs.rickandmorty.ui.screens.location.LocationViewModelContract
 import com.huskielabs.rickandmorty.ui.theme.Gray1
 import com.huskielabs.rickandmorty.ui.theme.Indigo
 import com.huskielabs.rickandmorty.ui.theme.RickAndMortyTheme
@@ -92,7 +95,9 @@ private fun Navigation() {
                 CharacterScreen(viewModel)
             }
             composable(Screen.Location.route) {
-//                Profile(navController)
+                val viewModel: LocationViewModelContract =
+                    hiltNavGraphViewModel<LocationViewModel>(it)
+                LocationScreen(viewModel)
             }
             composable(Screen.Episode.route) {
                 val viewModel: EpisodeViewModelContract =

@@ -24,6 +24,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.coil.CoilImage
 import com.huskielabs.rickandmorty.R
+import com.huskielabs.rickandmorty.shared.lastIndexForPagination
 import com.huskielabs.rickandmorty.shared.ui.FilterTopBar
 import com.huskielabs.rickandmorty.ui.theme.AdditionalText
 import com.huskielabs.rickandmorty.ui.theme.Black
@@ -33,7 +34,7 @@ import com.huskielabs.rickandmorty.ui.theme.White
 @ExperimentalFoundationApi
 @Composable
 fun CharacterScreen(viewModel: CharacterViewModelContract) {
-    val list by viewModel.characterList.collectAsState(initial = emptyList())
+    val characters by viewModel.characterList.collectAsState(initial = emptyList())
     val isLoading by viewModel.isLoading.collectAsState()
 
     Scaffold(
@@ -45,7 +46,7 @@ fun CharacterScreen(viewModel: CharacterViewModelContract) {
         }
     ) {
         CharacterScreenContent(
-            list = list,
+            characters = characters,
             isLoading = isLoading,
             getMoreItems = viewModel::getCharacters
         )
@@ -55,13 +56,13 @@ fun CharacterScreen(viewModel: CharacterViewModelContract) {
 @ExperimentalFoundationApi
 @Composable
 private fun CharacterScreenContent(
-    list: List<CharacterViewData>,
+    characters: List<CharacterViewData>,
     isLoading: Boolean,
     getMoreItems: () -> Unit
 ) {
     Column {
         val scrollState = rememberLazyListState()
-        val lastIndex = if (list.lastIndex <= 4) list.lastIndex else list.lastIndex - 4
+        val lastIndex = characters.lastIndexForPagination
 
         LazyVerticalGrid(
             state = scrollState,
@@ -74,7 +75,7 @@ private fun CharacterScreenContent(
             ),
             modifier = Modifier.fillMaxWidth()
         ) {
-            itemsIndexed(list) { index, character ->
+            itemsIndexed(characters) { index, character ->
                 CharacterItem(character)
 
                 if (index == lastIndex) {
@@ -106,8 +107,7 @@ private fun CharacterItem(character: CharacterViewData) {
         modifier = Modifier
             .padding(horizontal = 8.dp, vertical = 10.dp)
             .clickable { }
-            .width(150.dp)
-            .height(222.dp)
+            .size(width = 150.dp, height = 222.dp)
             .clip(RoundedCornerShape(8.dp))
             .border(width = 1.dp, color = Gray6, shape = RoundedCornerShape(8.dp))
             .background(White)

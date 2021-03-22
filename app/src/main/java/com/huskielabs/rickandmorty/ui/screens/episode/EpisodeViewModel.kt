@@ -31,6 +31,7 @@ class EpisodeViewModel @Inject constructor(
             try {
                 val result = getEpisodesUseCase(NoParams)
 
+                isLoading.value = false
                 episodeList.value = result.mapValues {
                     it.value.map { episode ->
                         EpisodeViewData(
@@ -41,8 +42,8 @@ class EpisodeViewModel @Inject constructor(
                         )
                     }
                 }
-
             } catch (e: Exception) {
+                isLoading.value = false
                 Log.e(TAG, "getEpisodes: ${e.message}", e)
             }
         }
