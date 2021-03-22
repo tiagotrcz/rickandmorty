@@ -10,20 +10,20 @@ import androidx.compose.foundation.lazy.LazyVerticalGrid
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.coil.CoilImage
+import com.huskielabs.rickandmorty.R
 import com.huskielabs.rickandmorty.ui.theme.*
 
 @ExperimentalFoundationApi
@@ -32,13 +32,36 @@ fun CharacterScreen(viewModel: CharacterViewModelContract) {
     val list by viewModel.characterList.collectAsState(initial = emptyList())
     val isLoading by viewModel.isLoading.collectAsState()
 
-    Scaffold {
+    Scaffold(topBar = { TopBar() }) {
         CharacterScreenContent(
             list = list,
             isLoading = isLoading,
             getMoreItems = viewModel::getCharacters
         )
     }
+}
+
+@Composable
+private fun TopBar() {
+    TopAppBar(
+        title = {
+            Text(
+                text = stringResource(id = R.string.character),
+                style = MaterialTheme.typography.h6,
+                color = Black,
+                modifier = Modifier.padding(16.dp)
+            )
+        },
+        actions = {
+            IconButton(onClick = { /*TODO*/ }) {
+                Icon(
+                    imageVector = ImageVector.vectorResource(id = R.drawable.ic_baseline_filter_list_24),
+                    contentDescription = null,
+                    tint = Indigo
+                )
+            }
+        }
+    )
 }
 
 @ExperimentalFoundationApi
@@ -48,36 +71,44 @@ private fun CharacterScreenContent(
     isLoading: Boolean,
     getMoreItems: () -> Unit
 ) {
-    val scrollState = rememberLazyListState()
-    val lastIndex = if (list.lastIndex <= 4) list.lastIndex else list.lastIndex - 4
-    LazyVerticalGrid(
-        state = scrollState,
-        cells = GridCells.Fixed(2),
-        contentPadding = PaddingValues(start = 14.dp, top = 20.dp, end = 14.dp, bottom = 50.dp),
-        modifier = Modifier.fillMaxWidth()
-    ) {
-        itemsIndexed(list) { index, character ->
-            CharacterItem(character)
+    Column {
+        val scrollState = rememberLazyListState()
+        val lastIndex = if (list.lastIndex <= 4) list.lastIndex else list.lastIndex - 4
 
-            if (index == lastIndex) {
-                getMoreItems()
-            }
-        }
+        LazyVerticalGrid(
+            state = scrollState,
+            cells = GridCells.Fixed(2),
+            contentPadding = PaddingValues(
+                start = 14.dp,
+                top = 20.dp,
+                end = 14.dp,
+                bottom = 50.dp
+            ),
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            itemsIndexed(list) { index, character ->
+                CharacterItem(character)
 
-        if (isLoading) {
-            item {
-                Box(
-                    contentAlignment = Alignment.TopCenter, modifier = Modifier
-                        .fillMaxWidth()
-                        .height(70.dp)
-                ) {
-                    CircularProgressIndicator(
-                        color = Indigo,
-                        modifier = Modifier.size(48.dp)
-                    )
+                if (index == lastIndex) {
+                    getMoreItems()
                 }
             }
         }
+
+        //TODO find a way to add this to the bottom of the list
+//        if (isLoading || list.isEmpty()) {
+//            Box(
+//                contentAlignment = Alignment.Center, modifier = Modifier
+//                    .fillMaxWidth()
+//                    .height(70.dp)
+//            ) {
+//                CircularProgressIndicator(
+//                    color = Indigo,
+//                    modifier = Modifier.size(48.dp)
+//                )
+//            }
+//
+//        }
     }
 }
 
