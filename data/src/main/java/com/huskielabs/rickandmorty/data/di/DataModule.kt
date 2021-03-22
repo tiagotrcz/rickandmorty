@@ -1,10 +1,15 @@
 package com.huskielabs.rickandmorty.data.di
 
 import com.huskielabs.rickandmorty.data.CharacterDataSourceImpl
+import com.huskielabs.rickandmorty.data.EpisodeDataSourceImpl
 import com.huskielabs.rickandmorty.data.remote.CharacterRemoteRepositoryImpl
+import com.huskielabs.rickandmorty.data.remote.EpisodeRemoteRepositoryImpl
 import com.huskielabs.rickandmorty.data.remote.service.CharacterService
+import com.huskielabs.rickandmorty.data.remote.service.EpisodeService
 import com.huskielabs.rickandmorty.data.repositories.CharacterRemoteRepository
+import com.huskielabs.rickandmorty.data.repositories.EpisodeRemoteRepository
 import com.huskielabs.rickandmorty.domain.datasources.CharacterDataSource
+import com.huskielabs.rickandmorty.domain.datasources.EpisodeDataSource
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
@@ -74,16 +79,38 @@ object DataModule {
 
     @Provides
     @Singleton
-    fun providesCharacterRemoteRepository(characterService: CharacterService): CharacterRemoteRepository {
+    fun providesEpisodeService(retrofit: Retrofit): EpisodeService {
+        return retrofit.create(EpisodeService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun providesCharacterRemoteRepository(
+        characterService: CharacterService
+    ): CharacterRemoteRepository {
         return CharacterRemoteRepositoryImpl(characterService)
     }
 
     @Provides
     @Singleton
-    fun providersCharacterDataSource(
+    fun providesEpisodeRemoteRepository(episodeService: EpisodeService): EpisodeRemoteRepository {
+        return EpisodeRemoteRepositoryImpl(episodeService)
+    }
+
+    @Provides
+    @Singleton
+    fun providesCharacterDataSource(
         characterRemoteRepository: CharacterRemoteRepository
     ): CharacterDataSource {
         return CharacterDataSourceImpl(characterRemoteRepository)
+    }
+
+    @Provides
+    @Singleton
+    fun providesEpisodeDataSource(
+        episodeRemoteRepository: EpisodeRemoteRepository
+    ): EpisodeDataSource {
+        return EpisodeDataSourceImpl(episodeRemoteRepository)
     }
 
 }
