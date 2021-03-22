@@ -13,7 +13,7 @@ class CharacterDataSourceImpl @Inject constructor(
     override suspend fun getCharacters(page: Int): PageModel<CharacterModel> {
         val response = characterRemoteRepository.getCharacters(page)
         return PageModel(
-            next = response.info.next,
+            nextPage = response.pageInfo.nextPage,
             result = response.result.map { character ->
                 CharacterModel(
                     created = character.created,

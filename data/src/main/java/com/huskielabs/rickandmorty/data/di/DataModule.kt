@@ -2,14 +2,19 @@ package com.huskielabs.rickandmorty.data.di
 
 import com.huskielabs.rickandmorty.data.CharacterDataSourceImpl
 import com.huskielabs.rickandmorty.data.EpisodeDataSourceImpl
+import com.huskielabs.rickandmorty.data.LocationDataSourceImpl
 import com.huskielabs.rickandmorty.data.remote.CharacterRemoteRepositoryImpl
 import com.huskielabs.rickandmorty.data.remote.EpisodeRemoteRepositoryImpl
+import com.huskielabs.rickandmorty.data.remote.LocationRemoteRepositoryImpl
 import com.huskielabs.rickandmorty.data.remote.service.CharacterService
 import com.huskielabs.rickandmorty.data.remote.service.EpisodeService
+import com.huskielabs.rickandmorty.data.remote.service.LocationService
 import com.huskielabs.rickandmorty.data.repositories.CharacterRemoteRepository
 import com.huskielabs.rickandmorty.data.repositories.EpisodeRemoteRepository
+import com.huskielabs.rickandmorty.data.repositories.LocationRemoteRepository
 import com.huskielabs.rickandmorty.domain.datasources.CharacterDataSource
 import com.huskielabs.rickandmorty.domain.datasources.EpisodeDataSource
+import com.huskielabs.rickandmorty.domain.datasources.LocationDataSource
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
@@ -85,6 +90,12 @@ object DataModule {
 
     @Provides
     @Singleton
+    fun providesLocationService(retrofit: Retrofit): LocationService {
+        return retrofit.create(LocationService::class.java)
+    }
+
+    @Provides
+    @Singleton
     fun providesCharacterRemoteRepository(
         characterService: CharacterService
     ): CharacterRemoteRepository {
@@ -95,6 +106,14 @@ object DataModule {
     @Singleton
     fun providesEpisodeRemoteRepository(episodeService: EpisodeService): EpisodeRemoteRepository {
         return EpisodeRemoteRepositoryImpl(episodeService)
+    }
+
+    @Provides
+    @Singleton
+    fun providesLocationRemoteRepository(
+        locationService: LocationService
+    ): LocationRemoteRepository {
+        return LocationRemoteRepositoryImpl(locationService)
     }
 
     @Provides
@@ -111,6 +130,14 @@ object DataModule {
         episodeRemoteRepository: EpisodeRemoteRepository
     ): EpisodeDataSource {
         return EpisodeDataSourceImpl(episodeRemoteRepository)
+    }
+
+    @Provides
+    @Singleton
+    fun providesLocationDataSource(
+        locationRemoteRepository: LocationRemoteRepository
+    ): LocationDataSource {
+        return LocationDataSourceImpl(locationRemoteRepository)
     }
 
 }

@@ -35,7 +35,7 @@ class CharacterViewModel @Inject constructor(
                 currentPage = nextPage
                 val result = getCharactersUseCase(GetCharactersUseCase.Params(currentPage))
 
-                isLastPage = result.next == null
+                isLastPage = result.nextPage == null
                 if (!isLastPage) nextPage++
 
                 val charactersList = result.result.map { character ->

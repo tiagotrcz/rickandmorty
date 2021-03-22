@@ -17,7 +17,7 @@ class EpisodeRemoteRepositoryImpl @Inject constructor(
         while (!isLastPage) {
             val result = episodeService.getEpisodes(page)
 
-            isLastPage = when (result.info.next == null) {
+            isLastPage = when (result.pageInfo.nextPage == null) {
                 true -> true
                 false -> {
                     page++
