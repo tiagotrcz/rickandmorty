@@ -10,6 +10,7 @@ import androidx.compose.foundation.lazy.LazyVerticalGrid
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
@@ -29,6 +30,7 @@ import com.huskielabs.rickandmorty.shared.ui.FilterTopBar
 import com.huskielabs.rickandmorty.shared.ui.skeletonAnim
 import com.huskielabs.rickandmorty.ui.theme.*
 
+@ExperimentalMaterialApi
 @ExperimentalFoundationApi
 @Composable
 fun CharacterScreen(viewModel: CharacterViewModelContract) {
@@ -39,7 +41,9 @@ fun CharacterScreen(viewModel: CharacterViewModelContract) {
         topBar = {
             FilterTopBar(
                 title = stringResource(id = R.string.character),
-                onFilterClicked = {}
+                onFilterClicked = {
+                    viewModel.openFilterScreen()
+                }
             )
         }
     ) {

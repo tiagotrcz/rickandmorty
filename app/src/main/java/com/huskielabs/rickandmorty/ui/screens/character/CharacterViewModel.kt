@@ -3,8 +3,10 @@ package com.huskielabs.rickandmorty.ui.screens.character
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.huskielabs.rickandmorty.Screen
 import com.huskielabs.rickandmorty.domain.usecases.GetCharactersUseCase
 import com.huskielabs.rickandmorty.shared.DispatchersProvider
+import com.huskielabs.rickandmorty.shared.Navigator
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
@@ -14,6 +16,7 @@ import javax.inject.Inject
 class CharacterViewModel @Inject constructor(
     private val getCharactersUseCase: GetCharactersUseCase,
     private val dispatchersProvider: DispatchersProvider,
+    private val navigator: Navigator,
 ) : ViewModel(), CharacterViewModelContract {
 
     private var currentPage = 0
@@ -55,6 +58,10 @@ class CharacterViewModel @Inject constructor(
                 Log.e(TAG, "getCharacters: ${e.message}", e)
             }
         }
+    }
+
+    override fun openFilterScreen() {
+        navigator.navigate(Screen.CharacterFilter.route)
     }
 
 }

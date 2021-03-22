@@ -8,5 +8,6 @@ interface CharacterViewModelContract {
     val isLoading: StateFlow<Boolean>
 
     fun getCharacters()
+    fun openFilterScreen()
 
 }
