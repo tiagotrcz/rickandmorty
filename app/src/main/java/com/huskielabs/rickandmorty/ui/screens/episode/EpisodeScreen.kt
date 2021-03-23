@@ -75,7 +75,7 @@ private fun EpisodeScreenContent(
                         onEpisodeClicked = onEpisodeCLicked,
                     )
                     Divider(
-                        color = Divider,
+                        color = DividerBackground,
                         modifier = Modifier.padding(start = 16.dp)
                     )
                 }

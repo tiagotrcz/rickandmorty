@@ -1,5 +1,6 @@
 package com.huskielabs.rickandmorty.ui.screens.character
 
+import com.huskielabs.rickandmorty.ui.screens.character.filter.CharacterFilterViewData
 import kotlinx.coroutines.flow.StateFlow
 
 interface CharacterViewModelContract {
@@ -9,5 +10,6 @@ interface CharacterViewModelContract {
 
     fun getCharacters()
     fun openFilterScreen()
+    fun setFilter(filter: CharacterFilterViewData?)
 
 }

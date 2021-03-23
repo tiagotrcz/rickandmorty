@@ -11,9 +11,9 @@ class GetCharactersUseCase @Inject constructor(
 ) : UseCase<GetCharactersUseCase.Params, PageModel<CharacterModel>> {
 
     override suspend fun invoke(params: Params): PageModel<CharacterModel> {
-        return characterDataSource.getCharacters(params.page)
+        return characterDataSource.getCharacters(params.page, params.status, params.gender)
     }
 
-    data class Params(val page: Int)
+    data class Params(val page: Int, val status: String?, val gender: String?)
 
 }

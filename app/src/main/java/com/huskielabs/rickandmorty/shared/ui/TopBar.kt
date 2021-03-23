@@ -12,11 +12,7 @@ import com.huskielabs.rickandmorty.ui.theme.Indigo
 fun FilterTopBar(title: String, onFilterClicked: () -> Unit) {
     TopAppBar(
         title = {
-            Text(
-                text = title,
-                style = MaterialTheme.typography.h6,
-                color = Black,
-            )
+            TopBarTitleText(title)
         },
         actions = {
             IconButton(onClick = onFilterClicked) {
@@ -29,5 +25,14 @@ fun FilterTopBar(title: String, onFilterClicked: () -> Unit) {
                 )
             }
         }
+    )
+}
+
+@Composable
+fun TopBarTitleText(title: String) {
+    Text(
+        text = title,
+        style = MaterialTheme.typography.h6,
+        color = Black,
     )
 }

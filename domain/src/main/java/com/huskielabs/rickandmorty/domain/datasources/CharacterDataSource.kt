@@ -5,6 +5,6 @@ import com.huskielabs.rickandmorty.domain.models.PageModel
 
 interface CharacterDataSource {
 
-    suspend fun getCharacters(page: Int): PageModel<CharacterModel>
+    suspend fun getCharacters(page: Int, status: String?, gender: String?): PageModel<CharacterModel>
 
 }

@@ -10,8 +10,8 @@ class CharacterRemoteRepositoryImpl @Inject constructor(
     private val characterService: CharacterService,
 ) : CharacterRemoteRepository {
 
-    override suspend fun getCharacters(page: Int): PageDTO<CharacterDTO> {
-        return characterService.getCharacters(page)
+    override suspend fun getCharacters(page: Int, status: String?, gender: String?): PageDTO<CharacterDTO> {
+        return characterService.getCharacters(page, status, gender)
     }
 
 }

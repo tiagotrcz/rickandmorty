@@ -1,6 +1,7 @@
 package com.huskielabs.rickandmorty
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -16,6 +17,7 @@ import com.huskielabs.rickandmorty.shared.Navigator
 import com.huskielabs.rickandmorty.ui.screens.character.CharacterScreen
 import com.huskielabs.rickandmorty.ui.screens.character.CharacterViewModel
 import com.huskielabs.rickandmorty.ui.screens.character.CharacterViewModelContract
+import com.huskielabs.rickandmorty.ui.screens.character.filter.*
 import com.huskielabs.rickandmorty.ui.screens.episode.EpisodeScreen
 import com.huskielabs.rickandmorty.ui.screens.episode.EpisodeViewModel
 import com.huskielabs.rickandmorty.ui.screens.episode.EpisodeViewModelContract
@@ -100,11 +102,20 @@ class MainActivity : ComponentActivity() {
                 composable(BottomNavScreen.Character.route) { backStackEntry ->
                     isBottomNavigationVisible = true
 
-                    // get values from filter
-//                    backStackEntry.savedStateHandle.getLiveData<String>("").observe(this@MainActivity) {}
+                    val filter = backStackEntry.savedStateHandle
+                        .get<CharacterFilterViewData>(ARG_CHARACTER_FILTER)
+                    Log.d(TAG, "Navigation: gender = ${filter?.gender}")
+                    Log.d(TAG, "Navigation: status = ${filter?.status}")
 
                     val viewModel: CharacterViewModelContract =
                         hiltNavGraphViewModel<CharacterViewModel>(backStackEntry)
+
+                    if (filter != null) {
+                        viewModel.setFilter(filter)
+                    }
+
+                    backStackEntry.savedStateHandle.set(ARG_CHARACTER_FILTER, null)
+
                     CharacterScreen(viewModel)
                 }
                 composable(BottomNavScreen.Location.route) {
@@ -120,7 +131,11 @@ class MainActivity : ComponentActivity() {
                     EpisodeScreen(viewModel)
                 }
                 composable(Screen.CharacterFilter.route) {
-                   isBottomNavigationVisible = false
+                    isBottomNavigationVisible = false
+
+                    val viewModel: CharacterFilterViewModelContract =
+                        hiltNavGraphViewModel<CharacterFilterViewModel>(it)
+                    CharacterFilterScreen(viewModel)
                 }
             }
         }
@@ -132,6 +147,7 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+private const val TAG = "MainActivity"
 
 private val items = listOf(
     BottomNavScreen.Character,

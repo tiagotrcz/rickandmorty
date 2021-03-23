@@ -7,6 +7,7 @@ import com.huskielabs.rickandmorty.Screen
 import com.huskielabs.rickandmorty.domain.usecases.GetCharactersUseCase
 import com.huskielabs.rickandmorty.shared.DispatchersProvider
 import com.huskielabs.rickandmorty.shared.Navigator
+import com.huskielabs.rickandmorty.ui.screens.character.filter.CharacterFilterViewData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
@@ -23,6 +24,8 @@ class CharacterViewModel @Inject constructor(
     private var nextPage = 1
     private var isLastPage = false
 
+    private var filter: CharacterFilterViewData? = null
+
     init {
         getCharacters()
     }
@@ -37,7 +40,13 @@ class CharacterViewModel @Inject constructor(
             isLoading.value = true
             try {
                 currentPage = nextPage
-                val result = getCharactersUseCase(GetCharactersUseCase.Params(currentPage))
+                val result = getCharactersUseCase(
+                    GetCharactersUseCase.Params(
+                        currentPage,
+                        filter?.status,
+                        filter?.gender,
+                    )
+                )
 
                 isLastPage = result.nextPage == null
                 if (!isLastPage) nextPage++
@@ -62,6 +71,15 @@ class CharacterViewModel @Inject constructor(
 
     override fun openFilterScreen() {
         navigator.navigate(Screen.CharacterFilter.route)
+    }
+
+    override fun setFilter(filter: CharacterFilterViewData?) {
+        this.filter = filter
+        currentPage = 0
+        nextPage = 1
+        isLastPage = false
+        characterList.value = emptyList()
+        getCharacters()
     }
 
 }
